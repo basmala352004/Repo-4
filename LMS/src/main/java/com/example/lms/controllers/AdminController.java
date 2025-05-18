@@ -20,7 +20,7 @@ import java.util.Map;
 import java.util.Optional;
 
 
-//@PreAuthorize("hasRole('ADMIN')")
+@PreAuthorize("hasRole('ADMIN')")
 
 @RestController
 @RequestMapping("/admin")
