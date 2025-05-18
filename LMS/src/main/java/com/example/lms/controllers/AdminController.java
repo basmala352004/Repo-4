@@ -27,12 +27,10 @@ import java.util.Optional;
 public class AdminController {
 
 
-    @Autowired
-    private UserService userService;
-    @Autowired
-    private NotificationService notificationService;
-    @Autowired
-    private CourseService courseService;
+
+    private final UserService userService;
+    private final NotificationService notificationService;
+    private final CourseService courseService;
 
     UserRepository userRepository;
 

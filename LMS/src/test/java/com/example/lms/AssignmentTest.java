@@ -11,7 +11,6 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import java.util.Optional;
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.*;
 import static org.mockito.Mockito.times;
 
@@ -26,6 +25,8 @@ import static org.mockito.Mockito.times;
     private AssignmentRepository assignmentRepository;  // Mock repository
 
     private Assignment testAssignment;  // Regular assignment object
+
+    private static final String EXCELLENT = "Excellent";
 
     @BeforeEach
     void setUp() {
@@ -64,13 +65,13 @@ import static org.mockito.Mockito.times;
     @Test
     void testGradeAssignment() {
         // Mock the service to return the graded assignment
-        when(assignmentService.gradeAssignment(1, 3.0, "Excellent")).thenReturn(testAssignment);
+        when(assignmentService.gradeAssignment(1, 3.0, EXCELLENT)).thenReturn(testAssignment);
 
         // Call the controller method
-        Assignment gradedAssignment = assignmentController.gradeAssignment(1, 3.0, "Excellent").getBody();
+        Assignment gradedAssignment = assignmentController.gradeAssignment(1, 3.0, EXCELLENT).getBody();
 
         // Verify that the service was called and the assignment was graded
-        verify(assignmentService, times(1)).gradeAssignment(1, 3.0, "Excellent");
+        verify(assignmentService, times(1)).gradeAssignment(1, 3.0, EXCELLENT);
         assertEquals(testAssignment, gradedAssignment);
     }
 

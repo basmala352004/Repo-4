@@ -26,6 +26,11 @@ import static org.junit.jupiter.api.Assertions.*;
 @ExtendWith(MockitoExtension.class)  // Enables Mockito for this test class
  class CourseServiceTest {
 
+    private static final String COURSE_ID_CS101 = "CS101";
+    private static final String STUDENT_NAME_JOHN_DOE = "John Doe";
+    private static final String STUDENT_NAME_JANE_SMITH = "Jane Smith";
+    private static final String MEDIA_FILE_PATH = "C:/uploads/lesson1.mp4";
+
     @Mock
     private CourseRepository courseRepository;
 
@@ -38,11 +43,11 @@ import static org.junit.jupiter.api.Assertions.*;
     @BeforeEach
     void setUp() {
         // Initialize students and lessons
-        StudentModel student1 = new StudentModel("John Doe", "pass1");
-        StudentModel student2 = new StudentModel("Jane Smith", "pass2");
+        StudentModel student1 = new StudentModel(STUDENT_NAME_JOHN_DOE, "pass1");
+        StudentModel student2 = new StudentModel(STUDENT_NAME_JANE_SMITH, "pass2");
 
         // Create a CourseModel and LessonModel for testing
-        course = new CourseModel("CS101", "Computer Science 101", "Intro to CS", 4, null, null);
+        course = new CourseModel(COURSE_ID_CS101, "Computer Science 101", "Intro to CS", 4, null, null);
         course.setStudents(Arrays.asList(student1, student2));  // Adding students to the course
         course.setListLessons(new ArrayList<>());  // Initialize the lessons list
 
@@ -65,15 +70,15 @@ import static org.junit.jupiter.api.Assertions.*;
         // Mock students
         StudentModel student1 = new StudentModel();
         student1.setId(1);
-        student1.setName("John Doe");
+        student1.setName(STUDENT_NAME_JOHN_DOE);
 
         StudentModel student2 = new StudentModel();
         student2.setId(2);
-        student2.setName("Jane Smith");
+        student2.setName(STUDENT_NAME_JANE_SMITH);
 
         // Mock course with students
         CourseModel mockCourse = new CourseModel();
-        mockCourse.setCourseId("CS101");
+        mockCourse.setCourseId(COURSE_ID_CS101);
         mockCourse.setStudents(Arrays.asList(student1, student2));
 
         // Mock the repository to return the course
@@ -85,14 +90,14 @@ import static org.junit.jupiter.api.Assertions.*;
         // Verify the results
         assertNotNull(courses);
         assertEquals(1, courses.size());
-        assertEquals("CS101", courses.get(0).getCourseId());
+        assertEquals(COURSE_ID_CS101, courses.get(0).getCourseId());
 
         // Verify students in the DTO
         List<StudentDTO> returnedStudents = courses.get(0).getStudents();
         assertNotNull(returnedStudents);
         assertEquals(2, returnedStudents.size());
-        assertEquals("John Doe", returnedStudents.get(0).getName());
-        assertEquals("Jane Smith", returnedStudents.get(1).getName());
+        assertEquals(STUDENT_NAME_JOHN_DOE, returnedStudents.get(0).getName());
+        assertEquals(STUDENT_NAME_JANE_SMITH, returnedStudents.get(1).getName());
     }
 
 
@@ -112,10 +117,10 @@ import static org.junit.jupiter.api.Assertions.*;
         // Mock findByCourseId to return a course
         when(courseRepository.findByCourseId(course.getCourseId())).thenReturn(course);
 
-        courseService.addMediaFile(course.getCourseId(), "C:/uploads/lesson1.mp4");  // Call the service method
+        courseService.addMediaFile(course.getCourseId(), MEDIA_FILE_PATH);  // Call the service method
 
         assertEquals(1, course.getMediaFiles().size());  // Verify that the media file was added
-        assertEquals("C:/uploads/lesson1.mp4", course.getMediaFiles().get(0));
+        assertEquals(MEDIA_FILE_PATH, course.getMediaFiles().get(0));
     }
 
     @Test
@@ -148,8 +153,8 @@ import static org.junit.jupiter.api.Assertions.*;
         // Verify that the correct students are returned
         assertNotNull(students);
         assertEquals(2, students.size());
-        assertEquals("John Doe", students.get(0).getName());
-        assertEquals("Jane Smith", students.get(1).getName());
+        assertEquals(STUDENT_NAME_JOHN_DOE, students.get(0).getName());
+        assertEquals(STUDENT_NAME_JANE_SMITH, students.get(1).getName());
     }
 
     @Test
@@ -158,7 +163,7 @@ import static org.junit.jupiter.api.Assertions.*;
         when(courseRepository.findById(course.getId())).thenReturn(Optional.of(course));
 
         // Add a media file
-        course.getMediaFiles().add("C:/uploads/lesson1.mp4");
+        course.getMediaFiles().add(MEDIA_FILE_PATH);
 
         // Call the service method to get media files
         List<String> mediaFiles = courseService.getMediaFilesByCourseId(course.getId());
@@ -166,7 +171,7 @@ import static org.junit.jupiter.api.Assertions.*;
         // Verify that the correct media file is returned
         assertNotNull(mediaFiles);
         assertEquals(1, mediaFiles.size());
-        assertEquals("C:/uploads/lesson1.mp4", mediaFiles.get(0));
+        assertEquals(MEDIA_FILE_PATH, mediaFiles.get(0));
     }
 
 

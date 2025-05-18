@@ -37,19 +37,14 @@ import static org.junit.jupiter.api.Assertions.*;
     private NotificationService notificationService;
 
 
-
-    private  CourseModel course;
-    private StudentModel student1;
-    private StudentModel student2;
-
     @BeforeEach
     void setUp() {
         // Create students
-        student1 = new StudentModel("John Doe", "password1");
-        student2 = new StudentModel("Jane Smith", "password2");
+        StudentModel student1 = new StudentModel("John Doe", "password1");
+        StudentModel student2 = new StudentModel("Jane Smith", "password2");
 
         // Create course and add students
-        course = new CourseModel("CS101", "Computer Science 101", "Intro to CS", 4, null, null);
+      CourseModel course = new CourseModel("CS101", "Computer Science 101", "Intro to CS", 4, null, null);
         course.setStudents(Arrays.asList(student1, student2));
         // Create a LessonModel for testing with a valid startDate
         lesson = new LessonModel("Lesson 1", Arrays.asList("Topic 1", "Topic 2"), "Lesson Description", "Dr. John",
