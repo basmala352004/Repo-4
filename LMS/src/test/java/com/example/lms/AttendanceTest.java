@@ -56,7 +56,7 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
         assertEquals("Lesson is not ongoing.", result);
     }
     @Test
-     void OTPNotCorrectTest() {
+     void otpNotCorrectTest() {
         lesson.setStartDate(LocalDateTime.now());
         String result = attendanceService.attendLesson(student.getId(), lesson.getId(), "NotValidOTP");
         assertEquals("OTP is not correct.", result);
@@ -71,15 +71,25 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
     }
 
     @Test
-     void lessonNotFoundTest() {
-        Exception exception = assertThrows(IllegalArgumentException.class,
-                () -> attendanceService.attendLesson(student.getId(), -1, lesson.getOTP()));
-        assertEquals("Lesson not found", exception.getMessage());
+    void lessonNotFoundTest() {
+        assertThrows(IllegalArgumentException.class, () -> {
+            try {
+                attendanceService.attendLesson(student.getId(), -1, lesson.getOTP());
+            } catch(IllegalArgumentException e) {
+                assertEquals("Lesson not found", e.getMessage());
+                throw e;
+            }
+        });
     }
     @Test
     void studentNotFoundTest() {
-        Exception exception = assertThrows(IllegalArgumentException.class,
-                () -> attendanceService.attendLesson(-1, lesson.getId(), lesson.getOTP()));
-        assertEquals("Student not found", exception.getMessage());
+         assertThrows(IllegalArgumentException.class, () -> {
+             try {
+                 attendanceService.attendLesson(student.getId(), lesson.getId(), null);
+             } catch (IllegalArgumentException e) {
+                 assertEquals("Student not found", e.getMessage());
+                 throw e;
+             }
+         });
     }
 }

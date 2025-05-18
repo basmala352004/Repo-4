@@ -29,8 +29,9 @@ public class JwtService {
 
     // Extract username/email from JWT
     public String extractUsername(String token) {
-        return Jwts.parser()
+        return Jwts.parserBuilder()
                 .setSigningKey(SECRET_KEY)
+                .build()
                 .parseClaimsJws(token)
                 .getBody()
                 .getSubject();
@@ -38,8 +39,9 @@ public class JwtService {
 
     // Extract roles as authorities
     public List<SimpleGrantedAuthority> extractAuthorities(String token) {
-        String role = Jwts.parser()
+        String role = Jwts.parserBuilder()
                 .setSigningKey(SECRET_KEY)
+                .build()
                 .parseClaimsJws(token)
                 .getBody()
                 .get("role", String.class);
@@ -60,8 +62,9 @@ public class JwtService {
     }
 
     private Date extractExpiration(String token) {
-        return Jwts.parser()
+        return Jwts.parserBuilder()
                 .setSigningKey(SECRET_KEY)
+                .build()
                 .parseClaimsJws(token)
                 .getBody()
                 .getExpiration();

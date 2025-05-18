@@ -40,6 +40,9 @@ class TrackPerformanceServiceTest {
     @InjectMocks
     private QuizService quizService;
 
+    private static final String STUDENT_NAME_JOHN_DOE = "John Doe";
+    private static final String STUDENT_OBJECT = "students";
+
     @BeforeEach
     void setUp() {
         MockitoAnnotations.openMocks(this);
@@ -60,7 +63,7 @@ class TrackPerformanceServiceTest {
         AttendanceModel mockAttendance = new AttendanceModel();
         StudentModel mockStudent = new StudentModel();
         mockStudent.setId(1);
-        mockStudent.setName("John Doe");
+        mockStudent.setName(STUDENT_NAME_JOHN_DOE);
         mockAttendance.setStudent(mockStudent);
         mockAttendance.setAttended(true);
         mockAttendance.setTimestamp(LocalDateTime.now());
@@ -88,7 +91,7 @@ class TrackPerformanceServiceTest {
 
         StudentModel mockStudent = new StudentModel();
         mockStudent.setId(1);
-        mockStudent.setName("John Doe");
+        mockStudent.setName(STUDENT_NAME_JOHN_DOE);
 
         when(assignmentRepository.findById(assignmentId)).thenReturn(Optional.of(mockAssignment));
         when(studentRepository.findAll()).thenReturn(Collections.singletonList(mockStudent));
@@ -98,8 +101,8 @@ class TrackPerformanceServiceTest {
         assertNotNull(result);
         assertEquals(assignmentId, result.get("assignmentId"));
         assertEquals("Assignment 1", result.get("assignmentTitle"));
-        assertNotNull(result.get("students"));
-        assertEquals(1, ((List<?>) result.get("students")).size());
+        assertNotNull(result.get(STUDENT_OBJECT));
+        assertEquals(1, ((List<?>) result.get(STUDENT_OBJECT)).size());
     }
 
     @Test
@@ -126,7 +129,7 @@ class TrackPerformanceServiceTest {
 
         StudentModel mockStudent = new StudentModel();
         mockStudent.setId(1);
-        mockStudent.setName("John Doe");
+        mockStudent.setName(STUDENT_NAME_JOHN_DOE);
 
         CourseModel mockCourse = new CourseModel();
         mockCourse.setId(101L);
@@ -140,15 +143,15 @@ class TrackPerformanceServiceTest {
         assertNotNull(result);
         assertEquals(quizId, result.get("quizId"));
         assertEquals("Quiz 1", result.get("quizTitle"));
-        assertNotNull(result.get("students"));
+        assertNotNull(result.get(STUDENT_OBJECT));
 
         @SuppressWarnings("unchecked")
-        List<Map<String, Object>> students = (List<Map<String, Object>>) result.get("students");
+        List<Map<String, Object>> students = (List<Map<String, Object>>) result.get(STUDENT_OBJECT);
         assertEquals(1, students.size());
 
         Map<String, Object> studentDetails = students.get(0);
         assertEquals(1, studentDetails.get("studentId"));
-        assertEquals("John Doe", studentDetails.get("studentName"));
+        assertEquals(STUDENT_NAME_JOHN_DOE, studentDetails.get("studentName"));
         assertEquals(90.0, studentDetails.get("grade"));
         assertEquals(101L, studentDetails.get("courseId"));
     }
