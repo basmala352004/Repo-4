@@ -15,7 +15,7 @@ public class AssignmentController {
     private  final AssignmentRepository  assignmentRepository;
 
 
-    // Constructor for dependency injection
+    //Constructor for dependency injection
     @Autowired
     public AssignmentController(AssignmentService assignmentService, AssignmentRepository assignmentRepository, CourseRepository courseRepository) {
         this.assignmentService = assignmentService;

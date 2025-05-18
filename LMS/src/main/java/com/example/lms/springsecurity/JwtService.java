@@ -18,7 +18,7 @@ public class JwtService {
     public String generateToken(User user) {
         return Jwts.builder()
                 .setSubject(user.getEmail())
-                .claim("role", user.getRole())
+                .claim("role", "ROLE_" + user.getRole())
                 .setIssuedAt(new Date())
                 .setExpiration(new Date(System.currentTimeMillis() + 1000 * 60 * 60 * 24)) // 24 hours expiration
                 .signWith(SignatureAlgorithm.HS256, SECRET_KEY)
@@ -37,10 +37,8 @@ public class JwtService {
 
     // Validate the token
     public boolean isTokenValid(String token, UserDetails userDetails) {
-        String username = extractUsername(token);
-        // Cast userDetails to your custom User class
-        User user = (User) userDetails;
-        return (username.equals(user.getUsername()) && !isTokenExpired(token));
+        final String username = extractUsername(token);
+        return (username.equals(userDetails.getUsername())) && !isTokenExpired(token);
     }
 
     private boolean isTokenExpired(String token) {
